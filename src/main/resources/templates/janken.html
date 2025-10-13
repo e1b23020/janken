@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>jankenサンプル</title>
+  <title>Janken GAME</title>
 </head>
 
 <body>
@@ -11,6 +11,19 @@
 
   <div th:if="${userName}">
     <p>Hi <span th:text="${userName}"></span></p>
+    <p>
+      <a href="/jankenfight?hand=Goo">グー</a>
+      <a href="/jankenfight?hand=Choki">チョキ</a>
+      <a href="/jankenfight?hand=Pa">パー</a>
+    </p>
+
+    <hr th:if="${result_show}">
+
+    <div th:if="${result_show}" th:object="${matchResult}">
+      <p>あなたの手: <span th:text="*{userHand}"></span></p>
+      <p>相手の手: <span th:text="*{cpuHand}"></span></p>
+      <p>結果: <span th:text="*{result}"></span></p>
+    </div>
   </div>
 
   <div th:if="${userName == null}">
