@@ -1,5 +1,8 @@
 package oit.is.z3069.kaizi.janken.controller;
 
+import java.security.Principal;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 
 import oit.is.z3069.kaizi.janken.model.Janken;
+import oit.is.z3069.kaizi.janken.model.Entry;
 
 @Controller
 public class JankenController {
+
+  @Autowired
+  private Entry entry;
 
   @PostMapping("/login")
   public String Login(@RequestParam("userName") String userName, HttpSession session) {
@@ -20,13 +27,12 @@ public class JankenController {
   }
 
   @GetMapping("/janken")
-  public String Janken(HttpSession session, ModelMap model) {
+  public String Janken(Principal prin, ModelMap model) {
+    String loginUser = prin.getName();
+    this.entry.addUser(loginUser);
+    model.addAttribute("entry", this.entry);
+    model.addAttribute("userName", loginUser);
 
-    String userName = (String) session.getAttribute("userName");
-
-    if (userName != null) {
-      model.addAttribute("userName", userName);
-    }
     return "janken.html";
   }
 
@@ -39,7 +45,7 @@ public class JankenController {
 
     model.addAttribute("matchResult", match);
     model.addAttribute("result_show", true);
-    return "janken";
+    return "janken.html";
   }
 
 }

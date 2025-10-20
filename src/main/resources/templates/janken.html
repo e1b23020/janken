@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+</html>
 
 <head>
   <meta charset="UTF-8">
@@ -7,27 +9,32 @@
 </head>
 
 <body>
-  <h1>じゃんけんゲーム</h1>
+  <div><a href="/logout">ログアウト</a></div>
 
-  <div th:if="${userName}">
-    <p>Hi <span th:text="${userName}"></span></p>
-    <p>
-      <a href="/jankenfight?hand=Goo">グー</a>
-      <a href="/jankenfight?hand=Choki">チョキ</a>
-      <a href="/jankenfight?hand=Pa">パー</a>
-    </p>
+  <h1>Janken GAME!</h1>
 
-    <hr th:if="${result_show}">
 
-    <div th:if="${result_show}" th:object="${matchResult}">
-      <p>あなたの手: <span th:text="*{userHand}"></span></p>
-      <p>相手の手: <span th:text="*{cpuHand}"></span></p>
-      <p>結果: <span th:text="*{result}"></span></p>
-    </div>
+  <div th:if="${entry}">
+    <p>エントリー</p>
+    <ul>
+      <li th:each="user : ${entry.users}">[[${user}]]</li>
+    </ul>
   </div>
 
-  <div th:if="${userName == null}">
-    <p>ログインしてください</p>
+  <p>Hi <span th:text="${userName}"></span></p>
+  <p>
+    <a href="/jankenfight?hand=Goo">グー</a>
+    <a href="/jankenfight?hand=Choki">チョキ</a>
+    <a href="/jankenfight?hand=Pa">パー</a>
+  </p>
+
+  <hr th:if="${result_show}">
+
+  <div th:if="${result_show}" th:object="${matchResult}">
+    <p>あなたの手: <span th:text="*{userHand}"></span></p>
+    <p>相手の手: <span th:text="*{cpuHand}"></span></p>
+    <p>結果: <span th:text="*{result}"></span></p>
+  </div>
   </div>
 </body>
 
