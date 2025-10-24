@@ -24,7 +24,10 @@ public class JankenAuthConfiguration {
             .requestMatchers("/janken/**").authenticated() // jankenにアクセスしたときだけ認識
             .anyRequest().permitAll()) // 上記以外は全員アクセス可能
         .csrf(csrf -> csrf
-            .ignoringRequestMatchers("/sample2*/**")); // sample2用にCSRF対策を無効化
+            .ignoringRequestMatchers("/h2-console/*"))
+        .headers(headers -> headers
+            .frameOptions(frameOptions -> frameOptions
+                .sameOrigin()));
     return http.build();
   }
 
