@@ -1,4 +1,3 @@
-/* userやgroupといった名前はSQLでは予約語で使えないため，userNameとしていることに注意 */
 CREATE TABLE users (
     id IDENTITY,
     userName VARCHAR NOT NULL
