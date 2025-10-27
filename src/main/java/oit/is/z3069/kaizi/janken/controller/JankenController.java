@@ -38,12 +38,14 @@ public class JankenController {
   @GetMapping("/janken")
   public String Janken(Principal prin, ModelMap model) {
     String loginUser = prin.getName();
+    this.entry.addUser(loginUser);
     ArrayList<User> users = userMapper.selectALLUser();
     ArrayList<Match> matches = matchMapper.selectAllMatchs();
-    this.entry.addUser(loginUser);
+
     model.addAttribute("entry", this.entry);
     model.addAttribute("userName", loginUser);
     model.addAttribute("matches", matches);
+    model.addAttribute("entryUsers", users);
 
     return "janken.html";
   }
@@ -52,12 +54,18 @@ public class JankenController {
   public String Fight(@RequestParam String hand, HttpSession session, ModelMap model) {
     String userName = (String) session.getAttribute("userName");
     model.addAttribute("userName", userName);
-
     Janken match = new Janken(hand);
-
     model.addAttribute("matchResult", match);
     model.addAttribute("result_show", true);
     return "janken.html";
   }
 
+  @GetMapping("/match")
+  public String Match(@RequestParam int id, Principal prin, ModelMap model) {
+    String loginUser = prin.getName();
+    User user = userMapper.selectUserById(id);
+    model.addAttribute("loginUser", loginUser);
+    model.addAttribute("userid", user.getUserName());
+    return "match.html";
+  }
 }

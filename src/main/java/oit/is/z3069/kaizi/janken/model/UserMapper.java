@@ -12,4 +12,10 @@ public interface UserMapper {
 
   @Select("SELECT * from users")
   ArrayList<User> selectALLUser();
+
+  @Select("SELECT * FROM users WHERE id = #{id}")
+  User selectUserById(int id);
+
+  @Select("SELECT * FROM users WHERE userName = #{userName}")
+  User selectUserByName(String userName);
 }
