@@ -7,6 +7,7 @@
 </head>
 
 <body>
+  <div><a href="/logout">ログアウト</a></div>
   <h1>Match</h1>
 
   <h2>
@@ -14,6 +15,22 @@
     V.S.
     <span th:text="${userid}"></span>
   </h2>
+
+  <p>
+    <a href="/jankenfight?hand=Goo">グー</a>
+    <a href="/jankenfight?hand=Choki">チョキ</a>
+    <a href="/jankenfight?hand=Pa">パー</a>
+  </p>
+
+  <hr th:if="${result_show}">
+
+  <div th:if="${result_show}" th:object="${matchResult}">
+    <p>あなたの手: <span th:text="*{userHand}"></span></p>
+    <p>相手の手: <span th:text="*{cpuHand}"></span></p>
+    <p>結果: <span th:text="*{result}"></span></p>
+  </div>
+
+  <a href="/janken">もどる</a>
 </body>
 
 </html>
