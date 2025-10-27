@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,14 +51,29 @@ public class JankenController {
     return "janken.html";
   }
 
+  @Transactional
   @GetMapping("/jankenfight")
-  public String Fight(@RequestParam String hand, HttpSession session, ModelMap model) {
-    String userName = (String) session.getAttribute("userName");
-    model.addAttribute("userName", userName);
+  public String Fight(@RequestParam String hand, Principal prin, ModelMap model) {
+    String userName = prin.getName();
+    User loginUser = userMapper.selectUserByName(userName);
+    User cpuUser = userMapper.selectUserByName("CPU");
+
     Janken match = new Janken(hand);
+    Match newMatch = new Match();
+
+    newMatch.setUser1(loginUser.getId());
+    newMatch.setUser2(cpuUser.getId());
+
+    newMatch.setUser1Hand(hand);
+    newMatch.setUser2Hand("Goo");
+
+    matchMapper.insertMatch(newMatch);
+
+    model.addAttribute("userName", userName);
     model.addAttribute("matchResult", match);
     model.addAttribute("result_show", true);
-    return "janken.html";
+
+    return "match.html";
   }
 
   @GetMapping("/match")
