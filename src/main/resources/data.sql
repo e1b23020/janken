@@ -7,3 +7,4 @@ INSERT INTO matches(id, user1, user2, user1Hand, user2Hand) VALUES (3,2,1,'Gu','
 ALTER TABLE matches ALTER COLUMN id RESTART WITH 4;
 INSERT INTO matchinfo(id, user1, user2, user1Hand, isActive) VALUES (1,1,1,'Gu', FALSE);
 INSERT INTO matchinfo(id, user1, user2, user1Hand, isActive) VALUES (2,2,3,'Choki', FALSE);
+ALTER TABLE matchinfo ALTER COLUMN id RESTART WITH 3;
