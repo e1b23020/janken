@@ -18,6 +18,8 @@ import oit.is.z3069.kaizi.janken.model.MatchMapper;
 import oit.is.z3069.kaizi.janken.model.User;
 import oit.is.z3069.kaizi.janken.model.UserMapper;
 import oit.is.z3069.kaizi.janken.model.Entry;
+import oit.is.z3069.kaizi.janken.model.MatchInfo;
+import oit.is.z3069.kaizi.janken.model.MatchInfoMapper;
 
 @Controller
 public class JankenController {
@@ -28,6 +30,8 @@ public class JankenController {
   UserMapper userMapper;
   @Autowired
   MatchMapper matchMapper;
+  @Autowired
+  MatchInfoMapper matchInfoMapper;
 
   @PostMapping("/login")
   public String Login(@RequestParam("userName") String userName, HttpSession session) {
@@ -83,5 +87,27 @@ public class JankenController {
     model.addAttribute("loginUser", loginUser);
     model.addAttribute("userid", user.getUserName());
     return "match.html";
+  }
+
+  @Transactional
+  @GetMapping("/fight")
+  public String Wait(@RequestParam String hand, @RequestParam String userid, Principal prin, ModelMap model) {
+    String userName = prin.getName();
+    User loginUser = userMapper.selectUserByName(userName);
+    User opponentUser = userMapper.selectUserByName(userid);
+
+    MatchInfo newMatchInfo = new MatchInfo();
+
+    newMatchInfo.setUser1(loginUser.getId());
+    newMatchInfo.setUser2(opponentUser.getId());
+    newMatchInfo.setUser1Hand(hand);
+    newMatchInfo.setActive(true);
+
+    matchInfoMapper.insertMatchInfo(newMatchInfo);
+
+    model.addAttribute("userName", userName);
+    model.addAttribute("userid", userid);
+
+    return "wait.html";
   }
 }

@@ -17,9 +17,9 @@
   </h2>
 
   <p>
-    <a href="/jankenfight?hand=Goo">グー</a>
-    <a href="/jankenfight?hand=Choki">チョキ</a>
-    <a href="/jankenfight?hand=Pa">パー</a>
+    <a th:href="@{/fight?(hand=Goo,userid=${userid})}">グー</a>
+    <a th:href="@{/fight?(hand=Choki,userid=${userid})}">チョキ</a>
+    <a th:href="@{/fight?(hand=Pa,userid=${userid})}">パー</a>
   </p>
 
   <hr th:if="${result_show}">
