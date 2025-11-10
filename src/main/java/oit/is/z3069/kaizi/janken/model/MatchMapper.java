@@ -17,5 +17,7 @@ public interface MatchMapper {
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insertMatch(Match match);
 
-  
+  @Select("SELECT * FROM matches WHERE id = #{id}")
+  Match selectMatchById(int id);//idで試合を検索する
+
 }
