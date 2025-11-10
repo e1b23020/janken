@@ -1,5 +1,6 @@
 package oit.is.z3069.kaizi.janken.controller;
 
+import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -37,20 +38,34 @@ public class JankenController {
   public String Login(@RequestParam("userName") String userName, HttpSession session) {
     session.setAttribute("userName", userName);
 
-    return "redirect:/janken";
+    return "janken";
   }
 
   @GetMapping("/janken")
   public String Janken(Principal prin, ModelMap model) {
     String loginUser = prin.getName();
+    User name = userMapper.selectUserByName(loginUser);
     this.entry.addUser(loginUser);
     ArrayList<User> users = userMapper.selectALLUser();
     ArrayList<Match> matches = matchMapper.selectAllMatchs();
+    ArrayList<MatchInfo> matchinfos = matchInfoMapper.selectAllMatchInfos();
+    ArrayList<MatchInfo> trueMatchInfo = new ArrayList<>();
+
+    if (matchinfos != null) {
+      for (MatchInfo m : matchinfos) {
+        if (m.getId() == name.getId()) {
+          if (m.getIsActive()) {
+            trueMatchInfo.add(m);
+          }
+        }
+      }
+    }
 
     model.addAttribute("entry", this.entry);
     model.addAttribute("userName", loginUser);
     model.addAttribute("matches", matches);
     model.addAttribute("entryUsers", users);
+    model.addAttribute("trueMatchs", trueMatchInfo);
 
     return "janken.html";
   }
@@ -101,7 +116,7 @@ public class JankenController {
     newMatchInfo.setUser1(loginUser.getId());
     newMatchInfo.setUser2(opponentUser.getId());
     newMatchInfo.setUser1Hand(hand);
-    newMatchInfo.setActive(true);
+    newMatchInfo.setIsActive(true);
 
     matchInfoMapper.insertMatchInfo(newMatchInfo);
 

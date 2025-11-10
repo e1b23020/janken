@@ -16,7 +16,7 @@
     <ul>
       <li th:each="user : ${entryUsers}">
         <a th:href="@{/match(id=${user.id})}">
-        [[${user.userName}]]
+          [[${user.userName}]]
         </a>
       </li>
     </ul>
@@ -24,7 +24,17 @@
 
   <p>Hi <span th:text="${userName}"></span></p>
 
-  <h2>試合結果</h2>
+  <h2>アクティブな試合</h2>
+  <div th:each="truematch, stat : ${trueMatchs}">
+    <tr>
+      <td>id:[[${truematch.id}]]</td>
+      <td>user1:[[${truematch.user1}]]</td>
+      <td>user2:[[${truematch.user2}]]</td>
+      <td>isActive:[[${truematch.isActive}]]</td>
+    </tr>
+  </div>
+
+  <h3>試合結果</h3>
   <div th:each="match, stat : ${matches}">
     <tr>
       <td>id:[[${match.id}]]</td>
